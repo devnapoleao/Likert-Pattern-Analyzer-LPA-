@@ -1,0 +1,33 @@
+import numpy as np
+import pandas as pd
+
+# Carregar os dados do arquivo CSV
+dados = pd.read_csv('tabela.csv')
+
+# Calcular média de cada item
+medias = dados.mean()
+
+# Calcular desvio padrão de cada item
+desvio_padrao = dados.std()
+
+# Calcular quartis para as médias e desvios padrão
+quartis_media = medias.quantile([0.25, 0.75])
+quartis_desvio = desvio_padrao.quantile([0.25, 0.75])
+
+# Definir critérios para médias altas e baixas e desvios padrão altos e baixos usando os quartis
+limite_media_alta = quartis_media[0.75]
+limite_media_baixa = quartis_media[0.25]
+limite_desvio_alto = quartis_desvio[0.75]
+limite_desvio_baixo = quartis_desvio[0.25]
+
+# Identificar itens com médias altas, médias baixas, desvios padrão altos e desvios padrão baixos
+itens_media_alta = medias[medias >= limite_media_alta].index
+itens_media_baixa = medias[medias <= limite_media_baixa].index
+itens_desvio_alto = desvio_padrao[desvio_padrao >= limite_desvio_alto].index
+itens_desvio_baixo = desvio_padrao[desvio_padrao <= limite_desvio_baixo].index
+
+# Exibir resultados
+print("Itens com médias altas:", list(itens_media_alta))
+print("Itens com médias baixas:", list(itens_media_baixa))
+print("Itens com desvios padrão altos:", list(itens_desvio_alto))
+print("Itens com desvios padrão baixos:", list(itens_desvio_baixo))
